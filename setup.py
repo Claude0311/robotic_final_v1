@@ -23,6 +23,7 @@ setup(
     entry_points={
         'console_scripts': [
             'test1 = final_v1.test1:main',
+            'marker = final_v1.marker:main'
         ],
     },
 )

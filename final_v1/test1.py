@@ -18,11 +18,13 @@ from asyncio            import Future
 from rclpy.node         import Node
 from sensor_msgs.msg    import JointState
 
+
 from hw3code.Segments   import Hold, Stay, GotoCubic, SplineCubic
 # from hw4code.hw4p3      import fkin, Jac
 
-from hw6code.GeneratorNode     import GeneratorNode
+from final_v1.GeneratorNode     import GeneratorNode
 from hw6code.KinematicChain    import KinematicChain
+from hw5code.TransformHelpers  import *
 
 #
 #   Trajectory Class
@@ -31,47 +33,76 @@ class Trajectory():
     # Initialization.
     def __init__(self,node):
         # Pick the target.
-        self.chain = KinematicChain(node, 'dummy_link', 'link_ten', self.jointnames())
-        self.q = np.radians(np.array([0, 90, -90, 0, 0, 0, 0, 0, 0, 0]).reshape((-1,1)))
+        self.chain = KinematicChain(node, 'world', 'link_39', self.jointnames())
+        self.q = np.radians(np.array([0]*39).reshape((-1,1)))
 
-        q1 = np.radians(np.array([0, 90, -90, 0, 0, 0, 0, 0, 0, 0]).reshape((-1,1)))
-        q2 = np.radians(np.array([0, -90, 90, 90, -90, 90, -90, 90, -90, 90]).reshape((-1,1)))
+        q1 = np.radians(np.array([0]*39).reshape((-1,1)))
+        q2 = np.radians(np.array([10]*39).reshape((-1,1)))
 
-        self.chain.setjoints(self.q)
+        # self.chain.setjoints(self.q)
         self.segments = [Hold(self.q, 1.0),GotoCubic(q1, q2, 1.0),GotoCubic(q2, q1, 1.0)]
         self.t0 = 0
         self.cyclic = True
+        self.goal = [0,0,0]
+
+        self.lam = 10
 
     # Declare the joint names.
     def jointnames(self):
         # Return a list of joint names
         #### YOU WILL HAVE TO LOOK AT THE URDF TO DETERMINE THESE! ####
-        return ['rod_one_joint', 'rod_three_joint', 'rod_four_joint','rod_five_joint',
-            'rod_six_joint','rod_seven_joint','rod_eight_joint','rod_nine_joint','rod_ten_joint','rod_eleven_joint']
+        j = []
+        for ind in range(1,40):
+            j.append('joint%i'%ind)
+        return j
 
+    def set_goal(self, pos):
+        self.goal = [pos.x,pos.y,pos.z]
+    
     # Evaluate at the given time.
     def evaluate(self, tabsolute, dt):
-        # Make sure we have a segment.
-        if len(self.segments) == 0:
-            return None
+        pd = np.array(self.goal).reshape((3,1))
+        xdot = (pd - self.chain.ptip())
+        xdot = 0.1*np.linalg.norm(xdot)
+        # norm[norm==0.] = 1.
+        # xdot /= norm
+        
+        Jinv = np.linalg.pinv(self.chain.Jv(),rcond=0.1)
+        eRR = ep(pd,self.chain.ptip())
 
-        # Also check whether the current segment is done.
-        if self.segments[0].completed(tabsolute - self.t0):
-            # If the current segment is done, shift to the next
-            self.t0 = self.t0 + self.segments[0].duration()
-            seg = self.segments.pop(0)
-            if self.cyclic:
-                self.segments.append(seg)
+        qdot = Jinv @ (xdot+self.lam*eRR)
 
-            # Make sure we still have something to do.
-            if len(self.segments) == 0:
-                return None
+        qdot_s = -1*self.q
+        qdot += (np.diag([1]*39)-Jinv@self.chain.Jv())@qdot_s
 
-        # Compute the positions/velocities as a function of time.
-        (q, qdot) = self.segments[0].evaluate(tabsolute - self.t0)
-
-        # Return the position and velocity as python lists.
+        q = self.q + qdot*dt
+        self.q = q
+        self.chain.setjoints(self.q)
         return (q.flatten().tolist(), qdot.flatten().tolist())
+
+        # # Make sure we have a segment.
+        # if len(self.segments) == 0:
+        #     return None
+
+        # # Also check whether the current segment is done.
+        # if self.segments[0].completed(tabsolute - self.t0):
+        #     # If the current segment is done, shift to the next
+        #     self.t0 = self.t0 + self.segments[0].duration()
+        #     seg = self.segments.pop(0)
+        #     if self.cyclic:
+        #         self.segments.append(seg)
+
+        #     # Make sure we still have something to do.
+        #     if len(self.segments) == 0:
+        #         return None
+
+        # # Compute the positions/velocities as a function of time.
+        # (q, qdot) = self.segments[0].evaluate(tabsolute - self.t0)
+        # self.q = q
+        # self.chain.setjoints(self.q)
+
+        # # Return the position and velocity as python lists.
+        # return (q.flatten().tolist(), qdot.flatten().tolist())
 
 
 #
