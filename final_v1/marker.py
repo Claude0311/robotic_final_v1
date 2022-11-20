@@ -15,11 +15,17 @@ class MinimalPublisher(Node):
 
         self.bike = Marker()
         self.bike.action = Marker.ADD
-        self.bike.type = Marker.SPHERE
+        self.bike.type = Marker.MESH_RESOURCE
+        self.bike.mesh_resource = "package://final_v1/meshes/Rock.stl"
+        self.bike.color.a = 1.#"0.7 0.5 0.1 1"
+        self.bike.color.r = .7
+        self.bike.color.g = .5
+        self.bike.color.b = .1
+
         self.bike.header.frame_id = "/world"
-        self.bike.scale.x = 0.5
-        self.bike.scale.y = 0.5
-        self.bike.scale.z = 0.5
+        self.bike.scale.x = 0.2
+        self.bike.scale.y = 0.2
+        self.bike.scale.z = 0.2
         self.bike.color.a = 1.
         self.bike.pose.position.x = 0.
         self.bike.pose.position.y = 0.

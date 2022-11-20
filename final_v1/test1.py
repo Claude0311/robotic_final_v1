@@ -64,8 +64,6 @@ class Trajectory():
         pd = np.array(self.goal).reshape((3,1))
         xdot = (pd - self.chain.ptip())
         xdot = 0.1*np.linalg.norm(xdot)
-        # norm[norm==0.] = 1.
-        # xdot /= norm
         
         Jinv = np.linalg.pinv(self.chain.Jv(),rcond=0.1)
         eRR = ep(pd,self.chain.ptip())
