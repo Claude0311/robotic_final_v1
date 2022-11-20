@@ -59,7 +59,7 @@ from rclpy.qos                import QoSProfile, DurabilityPolicy
 from std_msgs.msg             import String
 from urdf_parser_py.urdf      import Robot
 
-from hw5code.TransformHelpers  import *
+from hw5code.TransformHelpers import *
 
 
 #
@@ -243,6 +243,16 @@ class KinematicChain():
             else:
                 J[:,dof:dof+1] = self.data.e[dof]
         return J
+
+    def Jv_tip(self,tip_dof):
+        J = np.zeros((3,self.dofs))
+        for dof in range(self.dofs):
+            if (self.data.type[dof] == 'revolute'):
+                J[:,dof:dof+1] = cross(self.data.e[dof], p_from_T(self.data.T[tip_dof])-p_from_T(self.data.T[dof]))
+            else:
+                J[:,dof:dof+1] = self.data.e[dof]
+        return J
+        
     def Jw(self):
         J = np.zeros((3,self.dofs))
         for dof in range(self.dofs):
