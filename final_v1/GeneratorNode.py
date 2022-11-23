@@ -28,7 +28,7 @@ import numpy as np
 from asyncio            import Future
 from rclpy.node         import Node
 from sensor_msgs.msg    import JointState
-from visualization_msgs.msg import Marker
+from visualization_msgs.msg import Marker, MarkerArray
 
 #
 #   Trajectory Generator Node Class
@@ -46,8 +46,8 @@ class GeneratorNode(Node):
         # Add a publisher to send the joint commands.
         self.pub = self.create_publisher(JointState, '/joint_states', 10)
         self.subscription_1 = self.create_subscription(
-            Marker,
-            'marker1',
+            MarkerArray,
+            'markers_array',
             self.marker_rcvd,
             10)
         self.subscription_1  # prevent unused variable warning
@@ -73,9 +73,10 @@ class GeneratorNode(Node):
                                (self.dt, rate))
 
     def marker_rcvd(self,msg):
-        pos = msg.pose.position
+        pos = []
+        for marker in msg.markers:
+            pos.append(marker.pose.position)
         self.trajectory.set_goal(pos)
-        pass
 
     # Shutdown
     def shutdown(self):

@@ -1,0 +1,192 @@
+<?xml version="1.0"?>
+<robot  name="UNNAMED_1" >
+ <link  name="world" />
+ <joint  name="world_joint"  type="fixed" >
+  <parent  link="world" />
+  <child  link="link_0" />
+  <origin  rpy="0 0 0"  xyz="0 0 0" />
+ </joint>
+ <link  name="link_0" >
+  <visual >
+   <origin  rpy="1.57079632679 0 0"  xyz="0 0 0.072" />
+   <geometry >
+    <mesh  scale="0.002 0.002 0.002"  filename="package://final_v1/meshes/servo.stl" />
+   </geometry>
+   <material  name="" >
+    <color  rgba="0.2 0.1 0.8 1.0" />
+   </material>
+  </visual>
+  <origin  rpy="1.57079632679 0 1.57079632679"  xyz="0 0 0" />
+ </link>
+ <joint  name="joint1"  type="continuous" >
+  <origin  rpy="0 0 -1.57079632679"  xyz="0 0 0.072" />
+  <limit  lower="-3.14"  velocity="0.1"  effort="1000"  upper="3.14" />
+  <axis  xyz="1 0 0" />
+  <parent  link="link_0" />
+  <child  link="link_1" />
+ </joint>
+ <link  name="link_1" >
+  <origin  rpy="0 0 0"  xyz="0 0 0.036" />
+  <visual >
+   <origin  rpy="1.57079632679 0 0"  xyz="0 0 0.072" />
+   <geometry >
+    <mesh  scale="0.002 0.002 0.002"  filename="package://final_v1/meshes/servo.stl" />
+   </geometry>
+   <material  name="" >
+    <color  rgba="0.8 0.1 0.1 1.0" />
+   </material>
+  </visual>
+ </link>
+ <joint  name="joint2"  type="continuous" >
+  <origin  rpy="0 0 1.57079632679"  xyz="0 0 0.072" />
+  <limit  lower="-3.14"  velocity="0.1"  effort="1000"  upper="3.14" />
+  <axis  xyz="1 0 0" />
+  <parent  link="link_1" />
+  <child  link="link_2" />
+ </joint>
+ <link  name="link_2" >
+  <origin  rpy="0 0 0"  xyz="0 0 0.036" />
+  <visual >
+   <origin  rpy="1.57079632679 0 0"  xyz="0 0 0.072" />
+   <geometry >
+    <mesh  scale="0.002 0.002 0.002"  filename="package://final_v1/meshes/servo.stl" />
+   </geometry>
+   <material  name="" >
+    <color  rgba="0.1 0.8 0.1 1.0" />
+   </material>
+  </visual>
+ </link>
+ <joint  name="joint3"  type="continuous" >
+  <origin  rpy="0 0 -1.57079632679"  xyz="0 0 0.072" />
+  <limit  lower="-3.14"  velocity="0.1"  effort="1000"  upper="3.14" />
+  <axis  xyz="1 0 0" />
+  <parent  link="link_2" />
+  <child  link="link_3" />
+ </joint>
+ <link  name="link_3" >
+  <origin  rpy="0 0 0"  xyz="0 0 0.036" />
+  <visual >
+   <origin  rpy="1.57079632679 0 0"  xyz="0 0 0.072" />
+   <geometry >
+    <mesh  scale="0.002 0.002 0.002"  filename="package://final_v1/meshes/servo.stl" />
+   </geometry>
+   <material  name="" >
+    <color  rgba="0.8 0.1 0.1 1.0" />
+   </material>
+  </visual>
+ </link>
+ <joint  name="joint4"  type="continuous" >
+  <origin  rpy="0 0 1.57079632679"  xyz="0 0 0.072" />
+  <limit  lower="-3.14"  velocity="0.1"  effort="1000"  upper="3.14" />
+  <axis  xyz="1 0 0" />
+  <parent  link="link_3" />
+  <child  link="link_4" />
+ </joint>
+ <link  name="link_4" >
+  <origin  rpy="0 0 0"  xyz="0 0 0.036" />
+  <visual >
+   <origin  rpy="1.57079632679 0 0"  xyz="0 0 0.072" />
+   <geometry >
+    <mesh  scale="0.002 0.002 0.002"  filename="package://final_v1/meshes/servo.stl" />
+   </geometry>
+   <material  name="" >
+    <color  rgba="0.1 0.8 0.1 1.0" />
+   </material>
+  </visual>
+ </link>
+ <joint  name="joint5"  type="continuous" >
+  <origin  rpy="0 0 -1.57079632679"  xyz="0 0 0.072" />
+  <limit  lower="-3.14"  velocity="0.1"  effort="1000"  upper="3.14" />
+  <axis  xyz="1 0 0" />
+  <parent  link="link_4" />
+  <child  link="link_5" />
+ </joint>
+ <link  name="link_5" >
+  <origin  rpy="0 0 0"  xyz="0 0 0.036" />
+  <visual >
+   <origin  rpy="1.57079632679 0 0"  xyz="0 0 0.072" />
+   <geometry >
+    <mesh  scale="0.002 0.002 0.002"  filename="package://final_v1/meshes/servo.stl" />
+   </geometry>
+   <material  name="" >
+    <color  rgba="0.8 0.1 0.1 1.0" />
+   </material>
+  </visual>
+ </link>
+ <joint  name="joint6"  type="continuous" >
+  <origin  rpy="0 0 1.57079632679"  xyz="0 0 0.072" />
+  <limit  lower="-3.14"  velocity="0.1"  effort="1000"  upper="3.14" />
+  <axis  xyz="1 0 0" />
+  <parent  link="link_5" />
+  <child  link="link_6" />
+ </joint>
+ <link  name="link_6" >
+  <origin  rpy="0 0 0"  xyz="0 0 0.036" />
+  <visual >
+   <origin  rpy="1.57079632679 0 0"  xyz="0 0 0.072" />
+   <geometry >
+    <mesh  scale="0.002 0.002 0.002"  filename="package://final_v1/meshes/servo.stl" />
+   </geometry>
+   <material  name="" >
+    <color  rgba="0.1 0.8 0.1 1.0" />
+   </material>
+  </visual>
+ </link>
+ <joint  name="joint7"  type="continuous" >
+  <origin  rpy="0 0 -1.57079632679"  xyz="0 0 0.072" />
+  <limit  lower="-3.14"  velocity="0.1"  effort="1000"  upper="3.14" />
+  <axis  xyz="1 0 0" />
+  <parent  link="link_6" />
+  <child  link="link_7" />
+ </joint>
+ <link  name="link_7" >
+  <origin  rpy="0 0 0"  xyz="0 0 0.036" />
+  <visual >
+   <origin  rpy="1.57079632679 0 0"  xyz="0 0 0.072" />
+   <geometry >
+    <mesh  scale="0.002 0.002 0.002"  filename="package://final_v1/meshes/servo.stl" />
+   </geometry>
+   <material  name="" >
+    <color  rgba="0.8 0.1 0.1 1.0" />
+   </material>
+  </visual>
+ </link>
+ <joint  name="joint8"  type="continuous" >
+  <origin  rpy="0 0 1.57079632679"  xyz="0 0 0.072" />
+  <limit  lower="-3.14"  velocity="0.1"  effort="1000"  upper="3.14" />
+  <axis  xyz="1 0 0" />
+  <parent  link="link_7" />
+  <child  link="link_8" />
+ </joint>
+ <link  name="link_8" >
+  <origin  rpy="0 0 0"  xyz="0 0 0.036" />
+  <visual >
+   <origin  rpy="1.57079632679 0 0"  xyz="0 0 0.072" />
+   <geometry >
+    <mesh  scale="0.002 0.002 0.002"  filename="package://final_v1/meshes/servo.stl" />
+   </geometry>
+   <material  name="" >
+    <color  rgba="0.1 0.8 0.1 1.0" />
+   </material>
+  </visual>
+ </link>
+ <joint  name="joint9"  type="continuous" >
+  <origin  rpy="0 0 -1.57079632679"  xyz="0 0 0.072" />
+  <limit  lower="-3.14"  velocity="0.1"  effort="1000"  upper="3.14" />
+  <axis  xyz="1 0 0" />
+  <parent  link="link_8" />
+  <child  link="link_9" />
+ </joint>
+ <link  name="link_9" >
+  <origin  rpy="0 0 0"  xyz="0 0 0.036" />
+  <visual >
+   <origin  rpy="1.57079632679 0 0"  xyz="0 0 0.072" />
+   <geometry >
+    <mesh  scale="0.002 0.002 0.002"  filename="package://final_v1/meshes/servo.stl" />
+   </geometry>
+   <material  name="" >
+    <color  rgba="0.8 0.1 0.1 1.0" />
+   </material>
+  </visual>
+ </link>
+</robot>

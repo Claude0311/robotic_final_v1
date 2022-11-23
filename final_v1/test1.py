@@ -43,7 +43,7 @@ class Trajectory():
         self.segments = [Hold(self.q, 1.0),GotoCubic(q1, q2, 1.0),GotoCubic(q2, q1, 1.0)]
         self.t0 = 0
         self.cyclic = True
-        self.goal = [0,0,0]
+        self.goal = [[0,0,0]]
 
         self.lam = 10
 
@@ -57,13 +57,15 @@ class Trajectory():
         return j
 
     def set_goal(self, pos):
-        self.goal = [pos.x,pos.y,pos.z]
+        self.goal = []
+        for p in pos:
+            self.goal.append([p.x,p.y,p.z])
     
     # Evaluate at the given time.
     def evaluate(self, tabsolute, dt):
-        pd = np.array(self.goal).reshape((3,1))
+        pd = np.array(self.goal[0]).reshape((3,1))
         xdot = (pd - self.chain.ptip())
-        xdot = 0.1*np.linalg.norm(xdot)
+        xdot /= np.linalg.norm(xdot)
         
         Jinv = np.linalg.pinv(self.chain.Jv(),rcond=0.1)
         eRR = ep(pd,self.chain.ptip())
