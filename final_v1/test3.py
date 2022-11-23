@@ -51,6 +51,8 @@ class Trajectory():
         self.goal_list = [[-1.35,1,0],[-1.35,-1,0]]
 
         self.lam = 10
+        self.collision_count = 0
+        self.colliding = False
 
     # Declare the joint names.
     def jointnames(self):
@@ -104,8 +106,13 @@ class Trajectory():
 
             qdot += Jinv @ (self.lam*eRR/np.linalg.norm(eRR)**2) + (np.eye(J.shape[1])- Jinv @ J) @ (self.lam*(self.q_nom - self.q))
 
-        collision_arr.data.insert(0,collision_count)
-        if collision_count>0: print('collision detected: #',collision_count)
+        if collision_count>0 and not self.colliding: 
+            print('collision detected: #',collision_count)
+            self.collision_count += collision_count
+            self.colliding = True
+        if collision_count>0 and self.colliding:
+            self.colliding = False
+        collision_arr.data.insert(0,self.collision_count)
         self.publisher_.publish(collision_arr)
 
         qdot = qdot/len(self.goal_list)
