@@ -27,6 +27,10 @@ setup(
             'test2 = final_v1.test2:main',
             'test3 = final_v1.test3:main',
             'marker2 = final_v1.marker2:main',
+            'test4 = final_v1.test4:main',
+            'test5 = final_v1.test5:main',
+            'test6 = final_v1.test6:main',
+            'test7 = final_v1.test7:main'
         ],
     },
 )

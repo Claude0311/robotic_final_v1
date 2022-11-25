@@ -248,7 +248,10 @@ class KinematicChain():
         J = np.zeros((3,self.dofs))
         for dof in range(self.dofs):
             if (self.data.type[dof] == 'revolute'):
-                J[:,dof:dof+1] = cross(self.data.e[dof], p_from_T(self.data.T[tip_dof])-p_from_T(self.data.T[dof]))
+                if tip_dof>=dof:
+                    J[:,dof:dof+1] = cross(self.data.e[dof], p_from_T(self.data.T[tip_dof])-p_from_T(self.data.T[dof]))
+                else:
+                    J[:,dof:dof+1] = cross(self.data.e[dof], np.array([[0],[0],[0]]))
             else:
                 J[:,dof:dof+1] = self.data.e[dof]
         return J

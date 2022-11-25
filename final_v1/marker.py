@@ -2,7 +2,7 @@
 
 from visualization_msgs.msg import Marker, MarkerArray
 from sensor_msgs.msg    import JointState
-from std_msgs.msg import Int8MultiArray
+from std_msgs.msg import Int32MultiArray
 import rclpy
 from rclpy.node         import Node
 from numpy import random
@@ -31,7 +31,7 @@ class MinimalPublisher(Node):
         self.subscription_1  # prevent unused variable warning
 
         self.subscription_2 = self.create_subscription(
-            Int8MultiArray,
+            Int32MultiArray,
             'collision',
             self.colli_rcvd,
             10
@@ -89,7 +89,6 @@ class MinimalPublisher(Node):
                 self.marker_arr.markers[index].color.r = 1.
                 self.marker_arr.markers[index].color.g = 0.
                 self.marker_arr.markers[index].color.b = 0.
-                self.collision_countdown[index] = 100
             # else:
             #     self.marker_arr.markers[index].color.r = .7
             #     self.marker_arr.markers[index].color.g = .5
@@ -99,12 +98,6 @@ class MinimalPublisher(Node):
     def timer_callback(self):
         dt = 0.001
         for index in range(self.marker_len):
-            if self.collision_countdown[index]>0:
-                self.collision_countdown[index] -= 1
-            else:
-                self.marker_arr.markers[index].color.r = .7
-                self.marker_arr.markers[index].color.g = .5
-                self.marker_arr.markers[index].color.b = .1
 
             self.v[index]+=9.8*dt
             self.marker_arr.markers[index].pose.position.z -= self.v[index]*dt
@@ -114,6 +107,9 @@ class MinimalPublisher(Node):
                 self.marker_arr.markers[index].pose.position.x = x
                 self.marker_arr.markers[index].pose.position.y = y
                 self.v[index] = 0
+                self.marker_arr.markers[index].color.r = .7
+                self.marker_arr.markers[index].color.g = .5
+                self.marker_arr.markers[index].color.b = .1
 
         self.publisher_.publish(self.marker_arr)
     
@@ -126,7 +122,7 @@ class MinimalPublisher(Node):
         ratio = random.rand()
         P = Pi*ratio+Pf*(1-ratio)
         # print('random link', i)
-        return P[0][0],P[1][0]
+        return P[0][0]+random.normal(0,.1),P[1][0]+random.normal(0,.1)
 
 
 
